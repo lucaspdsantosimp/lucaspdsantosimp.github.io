@@ -1,0 +1,572 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">import React, { useState } from 'react';</p>
+<p class="p1">import { MapPin, Utensils, Wine, Sun, Moon, Car, ShoppingBag, Mountain, TreePine, Building, Coffee, Sparkles, X, BrainCircuit, Loader2 } from 'lucide-react';</p>
+<p class="p2"><br></p>
+<p class="p1">// --- DADOS DO ROTEIRO (mesmos dados do roteiro anterior) ---</p>
+<p class="p1">const itineraryData = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 1,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Chegada em Gramado",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Gramado",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Building,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Chegada e Acomodação",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Chegada ao aeroporto de Porto Alegre (POA), retirada do carro alugado e viagem de aproximadamente 2 horas até Gramado. Check-in no hotel e um tempo para relaxar.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Car</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Explorando o Centro",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Caminhe pela Av. Borges de Medeiros, visite a charmosa Rua Coberta e conheça as diversas lojas e chocolaterias.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: ShoppingBag</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Jantar Romântico com Fondue",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Um jantar clássico para iniciar a viagem com o pé direito.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Le Chalet de La Fondue", specialty: "Fondue tradicional" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Josephina Bistrô", specialty: "Culinária contemporânea e ambiente intimista" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 2,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Encantos de Gramado",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Gramado",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: TreePine,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Lago Negro e Mini Mundo",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Passeio de pedalinho no Lago Negro, seguido de uma visita ao parque em miniatura Mini Mundo, que encanta pelos detalhes.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Mountain</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Arquitetura e Chocolate",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Visite a Igreja Matriz São Pedro, a Fonte do Amor Eterno e participe de degustações nas famosas chocolaterias artesanais (Prawer, Lugano).",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Building</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Jantar Sofisticado",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Uma experiência gastronômica com foco em carnes nobres.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "La Caceria", specialty: "Carnes nobres e caças" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Cantina Pastasciutta", specialty: "Massas frescas e ambiente acolhedor" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 3,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Belezas Naturais de Canela",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Canela",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Mountain,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Cascata do Caracol",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Visite o Parque do Caracol para admirar a imponente cascata. Para uma vista panorâmica, utilize os Bondinhos Aéreos.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: TreePine</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Catedral de Pedra",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Conheça a majestosa Catedral de Pedra, um dos mais belos monumentos góticos do Brasil. O show de luzes ao entardecer é imperdível.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Building</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Gastronomia em Canela",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Jantar em um ambiente que une cinema, gastronomia e história.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Magnólia Cine Gastro Bar", specialty: "Cozinha contemporânea em um casarão de 1950" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Empório Canela", specialty: "Ambiente charmoso com bistrô e livraria" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 4,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Cultura e Vistas Panorâmicas",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Canela / Gramado",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Building,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Castelinho Caracol e Mundo a Vapor",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Visite o Castelinho Caracol para provar o famoso apfelstrudel e depois explore o parque temático Mundo a Vapor.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Coffee</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Skyglass e Parque de Lavanda",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Sinta a emoção na plataforma de vidro Skyglass Canela e depois relaxe no encantador Le Jardin Parque de Lavanda.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: TreePine</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Culinária Alemã",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Experimente os sabores da Alemanha em um jantar típico.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Restaurante Höppner", specialty: "Culinária tradicional alemã" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Gasthof Edelweiss", specialty: "Pratos alemães em ambiente familiar" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 5,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Jardim da Serra: Nova Petrópolis",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Nova Petrópolis",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: TreePine,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Aldeia do Imigrante",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Faça um bate e volta para Nova Petrópolis e visite o Parque Aldeia do Imigrante, que recria uma vila da época da colonização alemã.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Building</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Labirinto Verde e Café Colonial",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Divirta-se no Labirinto Verde na Praça das Flores e delicie-se com um autêntico café colonial, uma tradição da região.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Coffee</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Retorno e Noite Livre",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Retorno para Gramado. Sugestão de um jantar mais leve em um dos bistrôs da Rua Coberta.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Moon,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ name: "Opa's Kaffeehaus", specialty: "Café colonial farto" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ name: "Torquês", specialty: "Culinária alemã" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 6,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Chegada ao Vale dos Vinhedos",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Bento Gonçalves",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Wine,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Viagem e Acomodação",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Check-out em Gramado e viagem para Bento Gonçalves. Acomode-se em uma charmosa pousada no Vale dos Vinhedos.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Car</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Primeiras Vinícolas",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Inicie a exploração com uma visita à Casa Valduga para um tour com degustação. Depois, relaxe no Wine Garden da Vinícola Miolo.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Wine</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Jantar Típico Italiano",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Uma sequência italiana farta para celebrar a chegada à região dos vinhos.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Trattoria Mamma Gema", specialty: "Sequência italiana tradicional" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Valle Rústico", specialty: "Menu degustação com ingredientes orgânicos" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 7,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "História e Tradição Italiana",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Bento Gonçalves",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Building,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Passeio de Maria Fumaça",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Uma viagem ao passado no trem a vapor, com música, dança e degustações entre Bento Gonçalves, Garibaldi e Carlos Barbosa.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Car</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Caminhos de Pedra",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Explore o roteiro rural que preserva a arquitetura e as tradições dos imigrantes, com casas de pedra, cantinas e produtos coloniais.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Mountain</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Pizza e Vinho",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Um jantar descontraído em um ambiente romântico e aconchegante.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Pizza Entre Vinhos", specialty: "Pizzas artesanais em um porão de pedra" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Caldeira Restaurante", specialty: "Culinária variada no centro da cidade" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 8,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Explorando Mais Vinícolas",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Bento Gonçalves",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Wine,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Degustações Especiais",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Visite vinícolas de destaque como a Pizzato, conhecida pela qualidade, e vinícolas familiares como a Larentis para uma experiência personalizada.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Wine</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Cooperativa Vinícola Aurora",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Conheça o processo de produção em grande escala em uma das maiores cooperativas vinícolas do Brasil, no centro de Bento.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Building</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Jantar Harmonizado",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Desfrute de um jantar onde os pratos são criados para harmonizar perfeitamente com os vinhos locais.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Restaurante Don Laurindo", specialty: "Gastronomia harmonizada" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Osteria Della Colombina", specialty: "Cozinha afetiva e familiar" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 9,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Capital do Espumante",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Garibaldi",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Wine,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Brindando em Garibaldi",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Visite Garibaldi, a capital do espumante. Faça uma degustação na Vinícola Garibaldi e conheça seus premiados produtos.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Wine</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Rota dos Espumantes",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Conheça a histórica Vinícola Peterlongo, pioneira na elaboração de espumantes no Brasil, e explore a Rota dos Espumantes.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Car</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Jantar de Despedida",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Um jantar final para celebrar as experiências vividas no Vale.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Utensils,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Guri Cozinha de Origem", specialty: "Experiência gastronômica autoral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ name: "Hostaria Casacurta", specialty: "Culinária refinada em Garibaldi" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>day: 10,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "Despedida da Serra",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>location: "Bento Gonçalves",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>icon: Car,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>details: {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>morning: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Compras e Últimas Paisagens",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Aproveite a manhã para comprar vinhos, espumantes e produtos coloniais. Faça uma última caminhada pelos vinhedos.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: ShoppingBag</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>afternoon: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Retorno",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Check-out da pousada e viagem de volta para o aeroporto de Porto Alegre (POA), com as melhores memórias da Serra Gaúcha.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Car</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>night: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Fim da Viagem",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>description: "Embarque de volta para casa.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>icon: Moon,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>restaurants: []</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>},</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">// --- COMPONENTES ---</p>
+<p class="p2"><br></p>
+<p class="p1">const Header = () =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header className="bg-emerald-800 text-white p-6 shadow-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="container mx-auto text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1 className="text-4xl font-bold font-serif"&gt;Roteiro Serra Gaúcha&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p className="mt-2 text-lg font-light"&gt;Uma viagem de 10 dias para um casal de meia-idade&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const Sidebar = ({ selectedDay, setSelectedDay }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;aside className="w-full md:w-1/4 lg:w-1/5 bg-gray-100 p-4 overflow-y-auto border-r border-gray-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 className="text-xl font-semibold mb-4 text-emerald-900"&gt;Dias da Viagem&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{itineraryData.map(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const Icon = item.icon;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;li key={item.day} className="mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={() =&gt; setSelectedDay(item.day)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className={`w-full text-left p-3 rounded-lg transition-all duration-200 flex items-center ${</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>selectedDay === item.day</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>? 'bg-emerald-600 text-white shadow-md'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>: 'hover:bg-emerald-100 text-gray-700'</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}`}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;Icon className="mr-3 h-5 w-5 flex-shrink-0" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span className="font-medium"&gt;Dia {item.day}: {item.title}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>})}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/aside&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const DayView = ({ dayData }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!dayData) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return &lt;div className="p-8 text-center text-gray-500"&gt;Selecione um dia para ver os detalhes.&lt;/div&gt;;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const { title, location, details } = dayData;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const LocationIcon = MapPin;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main className="w-full md:w-3/4 lg:w-4/5 p-4 sm:p-8 bg-gray-50 overflow-y-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="max-w-4xl mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="mb-8 p-6 bg-white rounded-2xl shadow-lg border-l-4 border-emerald-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 className="text-3xl sm:text-4xl font-bold text-gray-800 font-serif"&gt;{title}&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="flex items-center mt-2 text-gray-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;LocationIcon className="h-5 w-5 mr-2" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span&gt;{location}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="space-y-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;OriginalItinerary details={details} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;PersonalizeDay originalDetails={details} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const OriginalItinerary = ({ details }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const MorningIcon = details.morning.icon || Sun;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const AfternoonIcon = details.afternoon.icon || Sun;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const NightIcon = details.night.icon || Moon;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="space-y-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;DetailCard icon={MorningIcon} title="Manhã" description={details.morning.description} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;DetailCard icon={AfternoonIcon} title="Tarde" description={details.afternoon.description} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;DetailCard icon={NightIcon} title="Noite" description={details.night.description} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{details.night.restaurants &amp;&amp; details.night.restaurants.length &gt; 0 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="mt-4 p-4 bg-white rounded-xl shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 className="text-lg font-semibold mb-3 text-gray-700 flex items-center"&gt;&lt;Utensils className="mr-2 h-5 w-5 text-amber-600"/&gt;Sugestões de Jantar&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="grid grid-cols-1 sm:grid-cols-2 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{details.night.restaurants.map(resto =&gt; &lt;RestaurantCard key={resto.name} {...resto} /&gt;)}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const PersonalizeDay = ({ originalDetails }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [prefs, setPrefs] = useState('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [personalizedPlan, setPersonalizedPlan] = useState('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [isLoading, setIsLoading] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [error, setError] = useState('');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const handlePersonalize = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setIsLoading(true);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setError('');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setPersonalizedPlan('');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const prompt = `Você é um planejador de viagens especialista na Serra Gaúcha. Abaixo está o roteiro original para um dia de viagem. O usuário tem as seguintes preferências: '${prefs}'. Por favor, reescreva o roteiro para este dia, incorporando as preferências do usuário. Mantenha o formato de 'Manhã', 'Tarde' e 'Noite', mas sugira atividades e locais alternativos ou adicionais que se alinhem com os interesses do usuário. O roteiro original é: Manhã: ${originalDetails.morning.description}, Tarde: ${originalDetails.afternoon.description}, Noite: ${originalDetails.night.description}. Apresente a resposta de forma clara e organizada, usando markdown com **negrito** para os títulos (Manhã, Tarde, Noite) e listas com hífens para as atividades.`;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const payload = { contents: chatHistory };</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiKey = "";<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const response = await fetch(apiUrl, {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>body: JSON.stringify(payload)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>throw new Error(`API error: ${response.statusText}`);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const result = await response.json();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (result.candidates &amp;&amp; result.candidates.length &gt; 0 &amp;&amp; result.candidates[0].content &amp;&amp; result.candidates[0].content.parts &amp;&amp; result.candidates[0].content.parts.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const text = result.candidates[0].content.parts[0].text;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setPersonalizedPlan(text);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>throw new Error("Não foi possível gerar um plano personalizado. Tente novamente.");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setError(e.message);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} finally {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setIsLoading(false);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="mt-12 p-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl shadow-lg border border-emerald-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 className="text-2xl font-bold text-emerald-900 font-serif mb-4 flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;Sparkles className="mr-3 text-yellow-500" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Personalize seu Dia</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p className="text-gray-600 mb-4"&gt;Diga-nos do que você gosta (ex: "aventura e natureza", "comida e vinho", "cultura e história") e a IA criará um plano especial para você.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="flex flex-col sm:flex-row gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>type="text"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>value={prefs}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>onChange={(e) =&gt; setPrefs(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>placeholder="Quais são suas preferências?"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>className="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>disabled={isLoading}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>onClick={handlePersonalize}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>disabled={isLoading || !prefs}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>className="bg-emerald-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{isLoading ? &lt;Loader2 className="animate-spin mr-2" /&gt; : &lt;BrainCircuit className="mr-2" /&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Gerar Roteiro ✨</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>{isLoading &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="mt-6 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;Loader2 className="h-8 w-8 text-emerald-600 animate-spin mx-auto" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p className="mt-2 text-gray-600"&gt;Criando um dia perfeito para você...&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{error &amp;&amp; &lt;div className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg"&gt;{error}&lt;/div&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{personalizedPlan &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="mt-6 p-6 bg-white rounded-lg prose max-w-none" dangerouslySetInnerHTML={{ __html: personalizedPlan.replace(/\*\*(.*?)\*\*/g, '&lt;strong&gt;$1&lt;/strong&gt;').replace(/\n/g, '&lt;br /&gt;').replace(/- (.*?)(&lt;br \/&gt;|$)/g, '&lt;p style="margin-left: 20px;"&gt;&amp;bull; $1&lt;/p&gt;') }}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const DetailCard = ({ icon: Icon, title, description }) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="flex items-center mb-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-emerald-100 p-2 rounded-full mr-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;Icon className="h-6 w-6 text-emerald-700" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 className="text-xl font-semibold text-emerald-800"&gt;{title}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p className="text-gray-600 leading-relaxed"&gt;{description}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">const RestaurantCard = ({ name, specialty }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [isModalOpen, setIsModalOpen] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [suggestion, setSuggestion] = useState('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [isLoading, setIsLoading] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [error, setError] = useState('');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const getSuggestion = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (suggestion) { // Don't fetch if already have a suggestion</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setIsModalOpen(true);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setIsModalOpen(true);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setIsLoading(true);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setError('');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const prompt = `Você é um crítico gastronômico. Para o restaurante '${name}', que é conhecido por '${specialty}', sugira 2 ou 3 pratos que um casal poderia experimentar, com uma breve e atrativa descrição de cada um. Apresente como uma lista com hífens.`;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const payload = { contents: chatHistory };</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiKey = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const response = await fetch(apiUrl, {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>body: JSON.stringify(payload)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!response.ok) throw new Error(`API error: ${response.statusText}`);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const result = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (result.candidates &amp;&amp; result.candidates[0]?.content?.parts[0]?.text) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setSuggestion(result.candidates[0].content.parts[0].text);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>throw new Error("Não foi possível obter sugestões. Tente novamente.");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setError(e.message);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} finally {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setIsLoading(false);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="bg-amber-50 p-4 rounded-lg border border-amber-200 flex flex-col justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h4 className="font-bold text-amber-900"&gt;{name}&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p className="text-sm text-amber-700"&gt;{specialty}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onClick={getSuggestion} className="mt-3 bg-amber-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-amber-600 transition-colors self-start flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;Sparkles className="mr-1 h-3 w-3"/&gt; Sugestão do Chef</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{isModalOpen &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onClick={() =&gt; setIsModalOpen(false)} className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;X className="h-6 w-6" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 className="text-2xl font-bold text-amber-800 mb-2"&gt;{name}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p className="text-gray-500 mb-4"&gt;Especialidade: {specialty}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="border-t pt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{isLoading &amp;&amp; &lt;div className="flex justify-center items-center"&gt;&lt;Loader2 className="h-6 w-6 animate-spin text-amber-500" /&gt; &lt;span className="ml-2"&gt;Buscando sugestões...&lt;/span&gt;&lt;/div&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{error &amp;&amp; &lt;div className="text-red-600"&gt;{error}&lt;/div&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{suggestion &amp;&amp; &lt;div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: suggestion.replace(/\n/g, '&lt;br /&gt;') }}&gt;&lt;/div&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const Footer = () =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer className="bg-gray-800 text-white p-4 text-center text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;Roteiro criado com carinho para uma viagem inesquecível. Boa viagem!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
+<p class="p1">);</p>
+<p class="p2"><br></p>
+<p class="p1">export default function App() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [selectedDay, setSelectedDay] = useState(1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const dayData = itineraryData.find(item =&gt; item.day === selectedDay);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="min-h-screen flex flex-col bg-gray-100 font-sans"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;Header /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="flex flex-1 flex-col md:flex-row h-[calc(100vh-140px)]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;Sidebar selectedDay={selectedDay} setSelectedDay={setSelectedDay} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;DayView dayData={dayData} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;Footer /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">}</p>
+</body>
+</html>
